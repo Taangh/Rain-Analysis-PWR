@@ -49,6 +49,8 @@ def readData(file, station_ids, values):
                   if int(id) in station_ids:
                         values[str(id)].append(float(mm))   
 
+
+## Zwraca dane z roku w postaci słownika: { 'id': [dzien1, dzien2, dzien3, dzien4, ... dzien365] }
 def Data(year, stations_ids):
       clearFolders()
       prepareFiles(year)
