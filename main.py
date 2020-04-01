@@ -3,6 +3,7 @@ from netCDF4 import Dataset
 from collections import OrderedDict
 from enum import Enum
 from datetime import datetime
+from meterology_station import Data as SatationData
 
 
 class Cities(Enum):
