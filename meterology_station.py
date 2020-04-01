@@ -12,9 +12,9 @@ def getFileFormat(year, month):
       return '{}_{}_{}.csv'.format(PREFIX, year, str(month).zfill(2))
 
 def clearFolders():
-      shutil.rmtree(COMBINED)
+      #shutil.rmtree(COMBINED)
       shutil.rmtree(CLEAN)
-      os.makedirs(COMBINED)
+      #os.makedirs(COMBINED)
       os.makedirs(CLEAN)
 
 def prepareFiles(year):
@@ -55,5 +55,9 @@ def Data(year, stations_ids):
       clearFolders()
       prepareFiles(year)
       values = readDataFromFiles(year, stations_ids)
+      for k, v in values.items():
+            with open('{}{}_{}.csv'.format(COMBINED, year, str(k)), "a") as file:
+                  for value in v:
+                        file.write("{}".format(value) + '\n')
       return values
 

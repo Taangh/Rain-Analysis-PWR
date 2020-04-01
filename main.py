@@ -3,7 +3,7 @@ from netCDF4 import Dataset
 from collections import OrderedDict
 from enum import Enum
 from datetime import datetime
-from meterology_station import Data as SatationData
+from meterology_station import Data as StationData
 
 
 class Cities(Enum):
@@ -89,6 +89,9 @@ def main():
     # print("Average year rain for", Cities.TRESTNO, "is:", get_rain_amount_array_for_city(data, Cities.TRESTNO))
     # print("Amount of rain on the 2.01.2018 for", Cities.TRESTNO, "is:", get_rain_amount_for_city_and_date(data, Cities.SZCZECIN, calculate_day_of_year("2.01.2018")-1))
     # print(get_amount_of_rainign_days_for_city(data, Cities.SZCZECIN))
+    StationData(2005, [153140050, 152140060, 151150150, 151170030])
+    StationData(2010, [153140050, 152140060, 151150150, 151170030])
+    StationData(2015, [153140050, 152140060, 151150150, 151170030])
 
 
 if __name__ == '__main__':
