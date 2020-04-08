@@ -3,6 +3,7 @@ from netCDF4 import Dataset
 from collections import OrderedDict
 from enum import Enum
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 
 class Cities(Enum):
@@ -53,19 +54,27 @@ def get_rain_amount_for_area_and_date(array_wit_rain_data, city, date):
     idx_lon = int((coords[city.value][1] - start_lon) / 0.04)
     sum_rain_in_area = 0
     points_inside_poland = 0
-    for i in range(0, 3):
-        for j in range(0, 3):
-            if array_wit_rain_data[idx_lat-i][idx_lon-j][date] != -99: #This is shit because some points are outside Poland -_-
-                sum_rain_in_area += array_wit_rain_data[idx_lat-i][idx_lon-j][date]
+    for i in range(-2, 3):
+        for j in range(-2, 3):
+            if array_wit_rain_data[idx_lat+i][idx_lon+j][date] != -99: #This is shit because some points are outside Poland -_-
+                sum_rain_in_area += array_wit_rain_data[idx_lat+i][idx_lon+j][date]
                 points_inside_poland += 1
     return sum_rain_in_area/points_inside_poland
 
+def get_rain_amount_for_area_and_date2(array_wit_rain_data, city, date):
+    idx_lat = int((start_lat - coords2[city.value][0]) / 0.25)
+    idx_lon = int((coords2[city.value][1] - start_lon) / 0.25)
+    print(array_wit_rain_data[idx_lat+1][idx_lon+1][date])
+    return array_wit_rain_data[idx_lat+1][idx_lon+1][date]
 
 # Constants
 data = read_netcdf("CCS_Poland_2020-03-25104145am_2018.nc")
+data2 = read_netcdf("CDR_Poland_2020-04-07104827pm_2018.nc")
+
 start_lon = 14.12
 start_lat = 54.88
 coords = np.array([[53.44, 14.36], [52.72, 14.40], [51.48, 15.44], [51.04, 17.08]])
+coords2 = np.array([[53.5, 14.25], [52.75, 14.50], [51.50, 15.50], [51.00, 17.00]])
 
 
 def main():
@@ -75,10 +84,17 @@ def main():
     average_daily_rain_TRESTNO = []
 
     for day in range(0, 365):
-        average_daily_rain_SZCZECIN.append(get_rain_amount_for_area_and_date(data, Cities.SZCZECIN, day))
-        average_daily_rain_KOSTRZYN_NAD_ODRA.append(get_rain_amount_for_area_and_date(data, Cities.KOSTRZYN_NAD_ODRA, day))
-        average_daily_rain_NOWA_SOL.append(get_rain_amount_for_area_and_date(data, Cities.NOWA_SOL, day))
-        average_daily_rain_TRESTNO.append(get_rain_amount_for_area_and_date(data, Cities.TRESTNO, day))
+        average_daily_rain_TRESTNO.append(get_rain_amount_for_area_and_date2(data2, Cities.TRESTNO, day))
+        #average_daily_rain_KOSTRZYN_NAD_ODRA.append(get_rain_amount_for_area_and_date(data, Cities.KOSTRZYN_NAD_ODRA, day))
+        #average_daily_rain_NOWA_SOL.append(get_rain_amount_for_area_and_date(data, Cities.NOWA_SOL, day))
+        #average_daily_rain_TRESTNO.append(get_rain_amount_for_area_and_date(data, Cities.TRESTNO, day))
+
+    print(average_daily_rain_TRESTNO)
+    plt.plot(average_daily_rain_TRESTNO)
+    plt.title("Trestno - obszar")
+    plt.xlabel("Dzień w roku 2018")
+    plt.ylabel("Średnia opadów dziennych [mm]")
+    plt.show()
 
     # print(data.shape)
     # print(data[36][6])
